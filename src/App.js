@@ -68,9 +68,9 @@ class App extends React.Component {
     });
   };
 
-  addItem = todoItem => {
+  addItem = itemName => {
     const newItem = {
-      task: todoItem,
+      task: itemName,
       id: Date.now(),
       completed: false
     };

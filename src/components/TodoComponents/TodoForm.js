@@ -11,7 +11,7 @@ class TodoForm extends React.Component {
     handleChanges = event => {
         //will update the state with each keystroke
         this.setState({
-            item: event.target.value
+            task: event.target.value
         });
     };
 
@@ -19,6 +19,8 @@ class TodoForm extends React.Component {
         event.preventDefault();
         this.props.addItem(this.state.task);
     }
+
+    
 
     //use Class properties to submit form
 
@@ -28,11 +30,11 @@ class TodoForm extends React.Component {
                 <input
                 type='text'
                 name='item'
-                value={this.state.item}
+                value={this.state.task}
                 onChange={this.handleChanges}
                 />
-                <button className='add-to-list' name='item' id='item' type='submit'>Add Todo Item</button>
-                <button className='clear-list'>Clear Completed Items</button>   
+                <button className='add-to-list' type='submit'>Add Todo Item</button>
+                <button className='clear-list' onClick={this.clearComplete}>Clear Completed Items</button>   
             </form>
         )
     }
