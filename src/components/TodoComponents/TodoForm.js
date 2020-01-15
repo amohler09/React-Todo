@@ -1,43 +1,19 @@
 import React from 'react'
 
-class TodoForm extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            task: ''
-        };
-    }
-
-    handleChanges = event => {
-        //will update the state with each keystroke
-        this.setState({
-            task: event.target.value
-        });
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-        this.props.addItem(this.state.task);
-    }
-
-    
-
-    //use Class properties to submit form
-
-    render() {
+const TodoForm = props => {
+     
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={props.addItem}>
                 <input
                 type='text'
-                name='item'
-                value={this.state.task}
-                onChange={this.handleChanges}
+                name='taskInput'
+                value={props.taskInput}
+                onChange={props.handleChanges}
                 />
-                <button className='add-to-list' type='submit'>Add Todo Item</button>
-                <button className='clear-list' onClick={this.clearComplete}>Clear Completed Items</button>   
+                <button className='add-to-list'>Add Todo Item</button>   
             </form>
         )
     }
-}
+
 
 export default TodoForm;

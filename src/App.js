@@ -2,7 +2,7 @@ import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm'
 import TodoList from './components/TodoComponents/TodoList'
 
-const todo = [
+const tasks = [
   {
     task: 'Unpack Clothes',
     id: 123468,
@@ -41,43 +41,83 @@ class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
-  constructor() {
-    super()
-    this.state = {
-      todoList: todo
+      state = {
+        tasks: [],
+        taskInput: ''
     };
-  }
-    //use class methods to update state
-  toggleItem = id => {
-    //find the item clicked on
-    //toggle the completed field
-    //update state with new todo data
-    const newTodos = this.state.todoList.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          completed: !item.completed
-        };
-      } else {
-        return item;
-      }
-    });
-    //update item list
-    this.setState({
-      todoList: newTodos
-    });
-  };
 
-  addItem = itemName => {
+  componentDidMount() {
+    this.setState({
+      tasks: tasks
+    })
+  }
+
+    //use class methods to update state
+  // toggleItem = id => {
+  //   //find the item clicked on
+  //   //toggle the completed field
+  //   //update state with new todo data
+  //   const newTodos = this.state.todoList.map(item => {
+  //     if (item.id === id) {
+  //       return {
+  //         ...item,
+  //         completed: !item.completed
+  //       };
+  //     } else {
+  //       return item;
+  //     }
+  //   });
+  //   //update item list
+  //   this.setState({
+  //     tasks: newTodos
+  //   });
+  // };
+
+  addItem = e => {
+    e.preventDefault();
     const newItem = {
-      task: itemName,
+      task: this.state.taskInput,
       id: Date.now(),
       completed: false
     };
     this.setState({
-      todoList: [...this.state.todoList, newItem]
+      tasks: [...this.state.tasks, newItem],
+      taskInput: ''
     })
   }
+
+  toggleItem = id => {
+    this.setState ( (prevState) => {
+      return {
+        tasks: prevState.tasks.map((task) => {
+          if (task.id === id) {
+            return {
+              ...task, completed: !task.completed
+            }
+          } else {
+            return task
+          }
+        })
+      }
+    })
+  }
+
+  clear = event => {
+    event.preventDefault();
+    this.setState({
+      tasks: this.state.tasks.filter(task => {
+       return  !task.completed
+        //return console.log('tasks', task);
+      })
+    })
+  }
+
+  handleChanges = event => {
+    //will update the state with each keystroke
+    this.setState({
+        [event.target.name]: event.target.value
+    });
+};
 
 
 
@@ -86,9 +126,18 @@ class App extends React.Component {
       <div className='App'>
         <div className='top'>
           <h1>To Do List</h1>
-        <TodoForm addItem={this.addItem}/>  
+        <TodoForm 
+          addItem={this.addItem} 
+          taskInput={this.state.taskInput} 
+          
+          handleChanges={this.handleChanges}
+          />  
         </div>
-        <TodoList todo={this.state.todoList} toggleItem={this.toggleItem} />
+        <TodoList 
+        tasks={this.state.tasks} 
+        toggleItem={this.toggleItem} 
+        clear={this.clear}
+        />
       </div>
     );
   }
